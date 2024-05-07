@@ -27,7 +27,7 @@ function segment_average(segment) {
   }
   return [sum_x / s_len , sum_y / s_len ];
 }
-
+//hello
 // This where you define your own face object
 function Face() {
   // these are state variables for a face
