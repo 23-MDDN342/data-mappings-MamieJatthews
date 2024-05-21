@@ -27,7 +27,7 @@ function segment_average(segment) {
   }
   return [sum_x / s_len , sum_y / s_len ];
 }
-//hello
+
 // This where you define your own face object
 function Face() {
   // these are state variables for a face
@@ -67,6 +67,8 @@ function Face() {
     strokeWeight(0.08);
     this.draw_segment(positions.left_eyebrow);
     this.draw_segment(positions.right_eyebrow);
+    ellipse(segment_average(positions.left_eyebrow)[0], segment_average(positions.left_eyebrow)[1], 1, 1);
+    ellipse(segment_average(positions.right_eyebrow)[0], segment_average(positions.right_eyebrow)[1], 1, 1);
 
     // draw the chin segment using points
     fill(this.chinColour);
@@ -92,10 +94,16 @@ function Face() {
     noStroke();
     let curEyeShift = 0.04 * this.eye_shift;
     if(this.num_eyes == 2) {
-      fill(this.detailColour);
-      ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.33);
-      ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.33);
+      fill(255);
+      ellipse(left_eye_pos[0], left_eye_pos[1], 1, 0.5);
+      ellipse(right_eye_pos[0], right_eye_pos[1], 1, 0.5);
+      fill(0);
+      ellipse(left_eye_pos[0], left_eye_pos[1], 0.25, 0.25);
+      ellipse(segment_average(positions.left_eye)[0], segment_average(positions.left_eye)[0], 0.25, 0.25);
+      this.chinPoint = positions.chin[15]
+      //console.log(this.chinPoint)
 
+      ellipse(this.chinPoint[0],this.chinPoint[1], 0.5)
       // fill(this.mainColour);
       // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
       // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
