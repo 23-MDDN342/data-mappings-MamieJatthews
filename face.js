@@ -42,6 +42,9 @@ function Face() {
   this.lipColour = [136, 68, 68]
   this.eyebrowColour = [119, 85, 17]
 
+this.colourShift = 0;
+this.eyeBrowValue = 50;
+this.flowerValue = 0;
   /*
    * Draw the face with position lists that include:
    *    chin, right_eye, left_eye, right_eyebrow, left_eyebrow
@@ -56,6 +59,13 @@ function Face() {
     ellipse(segment_average(positions.chin)[0], 0, 3, 4);
     noStroke();
 
+    this.red = color(255,42,109)
+    this.blue = color(5,217,232)
+    this.currentColor = lerpColor(this.red,this.blue, this.colourShift)
+    fill(0, 100, 100);
+    stroke(this.currentColor);
+
+    
 
     // mouth
     fill(this.detailColour);
@@ -63,17 +73,43 @@ function Face() {
 
     // eyebrows
     fill( this.eyebrowColour);
-    stroke( this.eyebrowColour);
+    stroke( this.currentColor);
     strokeWeight(0.08);
-    this.draw_segment(positions.left_eyebrow);
-    this.draw_segment(positions.right_eyebrow);
-    ellipse(segment_average(positions.left_eyebrow)[0], segment_average(positions.left_eyebrow)[1], 1, 1);
-    ellipse(segment_average(positions.right_eyebrow)[0], segment_average(positions.right_eyebrow)[1], 1, 1);
+    //this.draw_segment(positions.left_eyebrow);
+    //this.draw_segment(positions.right_eyebrow);
+
+    //set variables for left eyebrow
+    this.browLeft = positions.left_eyebrow[1]
+    this.browRight = positions.left_eyebrow[4]
+    this.browTop = positions.left_eyebrow[3]
+
+    //set variables for right eyebrow
+    this.browLeft_R = positions.right_eyebrow[1]
+    this.browRight_R = positions.right_eyebrow[4]
+    this.browTop_R = positions.right_eyebrow[3]
+
+    //ellipse(this.browLeft[0], this.browLeft[1], .1, .5);
+  
+    //draw eyebrows as a triangular representation
+    stroke(0);
+    strokeWeight(0.05);
+    triangle(this.browLeft[0]-0.2, this.browLeft[1],
+             this.browTop[0], this.browTop[1]-0.2,
+             this.browRight[0]+0.2, this.browRight[1]);
+
+    triangle(this.browLeft_R[0]-0.2, this.browLeft_R[1],
+             this.browTop_R[0], this.browTop_R[1]-0.2,
+             this.browRight_R[0]+0.2, this.browRight_R[1]);      
+
+    //ellipse(segment_average(positions.left_eyebrow)[0], segment_average(positions.left_eyebrow)[1], 1, 1);
+    //ellipse(segment_average(positions.right_eyebrow)[0], segment_average(positions.right_eyebrow)[1], 1, 1);
 
     // draw the chin segment using points
     fill(this.chinColour);
     stroke(this.chinColour);
     this.draw_segment(positions.chin);
+    
+    
 
     fill(100, 0, 100);
     stroke(100, 0, 100);
@@ -91,36 +127,35 @@ function Face() {
     let right_eye_pos = segment_average(positions.right_eye);
 
     // eyes
-    noStroke();
+    strokeWeight(0.05);
+    stroke(0);
     let curEyeShift = 0.04 * this.eye_shift;
-    if(this.num_eyes == 2) {
+    
       fill(255);
       ellipse(left_eye_pos[0], left_eye_pos[1], 1, 0.5);
       ellipse(right_eye_pos[0], right_eye_pos[1], 1, 0.5);
       fill(0);
       ellipse(left_eye_pos[0], left_eye_pos[1], 0.25, 0.25);
-      ellipse(segment_average(positions.left_eye)[0], segment_average(positions.left_eye)[0], 0.25, 0.25);
+      ellipse(right_eye_pos[0], right_eye_pos[1], 0.25, 0.25);
+      fill(0, 100, 0);
+      arc(left_eye_pos[0], left_eye_pos[1], 1, 0.5, 180, 0, CHORD)
+      arc(right_eye_pos[0], right_eye_pos[1], 1, 0.5, 180, 0, CHORD)
+      
       this.chinPoint = positions.chin[15]
       //console.log(this.chinPoint)
 
-      ellipse(this.chinPoint[0],this.chinPoint[1], 0.5)
+      ellipse(this.chinPoint[0],this.chinPoint[1], .5)
       // fill(this.mainColour);
       // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
       // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
-    }
-    else {
-      let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
-      let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
-
-      fill(this.detailColour);
-      ellipse(eyePosX, eyePosY, 0.45, 0.27);
-
-      fill(this.mainColour);
-      ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
-    }
+    
    // fill(0)
    //ellipse(0,0, 0.5,0.5) center point
    //rect(-2,-2,4.5,4) sizing debug 
+
+   //hat 
+   this.chinPoint0 = positions.chin[0]
+   rect(this.chinPoint0[0], this.chinPoint0[1]-2, 3, 1);
   }
 
   // example of a function *inside* the face object.
@@ -145,17 +180,17 @@ function Face() {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
-    this.eye_shift = map(settings[1], 0, 100, -2, 2);
-    this.mouth_size = map(settings[2], 0, 100, 0.5, 8);
+    this.colourShift = map(settings[0], 0, 100, 0, 1);
+    this.eyeBrowValue = map(settings[1], 0, 100, 0, 100);
+    this.flowerValue = map(settings[2], 0, 100, 0, 20);
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
     let settings = new Array(3);
-    settings[0] = map(this.num_eyes, 1, 2, 0, 100);
-    settings[1] = map(this.eye_shift, -2, 2, 0, 100);
-    settings[2] = map(this.mouth_size, 0.5, 8, 0, 100);
+    settings[0] = map(this.colourShift,0, 1, 0, 100);
+    settings[1] = map(this.eyeBrowValue, 0, 100, 0, 100);
+    settings[2] = map(this.flowerValue,0, 20, 0, 100);
     return settings;
   }
 }

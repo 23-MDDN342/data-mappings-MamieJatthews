@@ -5,3 +5,7 @@
 REPLACE ALL TEXT IN THIS FILE
 
 This README should be used to document your design.
+
+worked on understtanding the code today. After understanding how the points on the face can translate to making shapes I was able to begin making shapes on my face to create my mask. 
+
+Today I worked on adding more shapes to my face to bring the cubism form together. I also experimented with editing the sliders. I plan to either a hat or hair ontop of the head which is affected by a slider depending on the references hair length and color. 
