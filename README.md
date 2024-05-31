@@ -9,3 +9,5 @@ This README should be used to document your design.
 worked on understtanding the code today. After understanding how the points on the face can translate to making shapes I was able to begin making shapes on my face to create my mask. 
 
 Today I worked on adding more shapes to my face to bring the cubism form together. I also experimented with editing the sliders. I plan to either a hat or hair ontop of the head which is affected by a slider depending on the references hair length and color. 
+
+I Have been working on the sliders and how they will be affected by the reference faces. I've decided to go with hair color, hair length and whether they are wearing lipstick or not. Originally I was just going to have 2 options for hair. One with long and the other with short. Howerver looking at the sample reference faces I noticed alot of different lengths and bald people aswell. I ended up having 5 options of hair length which stack ontop of each other to make it longer. 

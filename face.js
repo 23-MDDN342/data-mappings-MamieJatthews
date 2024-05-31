@@ -39,12 +39,12 @@ function Face() {
   this.mouth_size = 1;  // range is 0.5 to 8
 
   this.chinColour = [153, 153, 51]
-  this.lipColour = [136, 68, 68]
+  //this.lipColour = [136, 68, 68]
   this.eyebrowColour = [119, 85, 17]
 
-this.colourShift = 0;
-this.eyeBrowValue = 50;
-this.flowerValue = 0;
+this.colourShift = 50;
+this.hairLength = 0;
+this.lipColour = 0;
   /*
    * Draw the face with position lists that include:
    *    chin, right_eye, left_eye, right_eyebrow, left_eyebrow
@@ -52,24 +52,115 @@ this.flowerValue = 0;
    */  
   this.draw = function(positions) {
     console.log()
-    // head
-    ellipseMode(CENTER);
-    stroke(stroke_color);
-    fill(this.mainColour);
-    ellipse(segment_average(positions.chin)[0], 0, 3, 4);
-    noStroke();
 
-    this.red = color(255,42,109)
-    this.blue = color(5,217,232)
+
+    this.red = color(41, 21, 4);
+    this.blue = color(250, 198, 102);
     this.currentColor = lerpColor(this.red,this.blue, this.colourShift)
     fill(0, 100, 100);
     stroke(this.currentColor);
 
-    
+
+
+    //hair back
+    stroke(0)
+    strokeWeight(0.05);
+    this.chinPoint0 = positions.chin[0];
+    this.chinPoint16 = positions.chin[16];
+   fill(this.currentColor);
+
+   //if slider is above 80 have hair be longest 
+   if(this.hairLength > 80) {
+   rect(this.chinPoint0[0]-.5, this.chinPoint0[1], 1.5, 4, 0, 0, 5, 0);
+   rect(this.chinPoint16[0]-1, this.chinPoint16[1], 1.5, 4, 0, 0, 0, 1);
+   }
+   //if slider is above 60 have medium long hair
+   if(this.hairLength > 60){
+   rect(this.chinPoint0[0]-.8, this.chinPoint0[1]-0.5, 1.5, 3, 0, 0, 0, 1);
+   rect(this.chinPoint16[0]-0.7, this.chinPoint16[1]-0.5, 1.5, 3, 0, 0, 1, 0);
+   }
+  
+
+   // head
+  this.chin1 = positions.chin[1];
+  this.chin14 = positions.chin[14];
+  this.chin7 = positions.chin[7];
+
+  this.chin9 = positions.chin[9];
+  this.chin15 = positions.chin[15];
+  
+
+   ellipseMode(CENTER);
+   fill(235, 126, 9);
+   rect(this.chinPoint0[0], this.chinPoint0[1]-2, 3.5, 3, 5, 5, 0, 0);
+   fill(252, 207, 3);
+   triangle(this.chin1[0], this.chin1[1],
+            this.chin14[0], this.chin14[1],
+            this.chin7[0], this.chin7[1]);
+    fill(242, 120, 104);       
+   triangle(this.chin7[0], this.chin7[1],
+            this.chin9[0]+0.8, this.chin9[1]-0.4,
+            this.chin15[0], this.chin15[1]);
+   
+
+   //hair top
+   this.chinPoint0 = positions.chin[0];
+   
+   fill(this.currentColor);
+   
+   if(this.hairLength > 20){
+   rect(this.chinPoint0[0], this.chinPoint0[1]-2.6, 3.5, 1.5, 5, 5, 0, 0);
+   }
+   if(this.hairLength > 40){
+   arc(this.chinPoint0[0]+0.1, this.chinPoint0[1]-1.4, 2, 3, 290, 150, CHORD)
+   arc(this.chinPoint16[0]+0.1, this.chinPoint16[1]-1.4, 2, 3, 50, 240, CHORD)
+   } 
+
+   //nose
+   fill(0, 100, 100);
+   this.noseTop = positions.nose_bridge[0];
+   this.noseLeft = positions.nose_tip[0];
+   this.noseRight = positions.nose_tip[4];
+
+   //create squidward shape nose using quad
+   quad(this.noseTop[0]-0.2, this.noseTop[1]-1,
+        this.noseTop[0]+0.2, this.noseTop[1]-1,
+        this.noseRight[0]+0.2, this.noseRight[1]+0.3,
+        this.noseLeft[0]-0.2, this.noseLeft[1]+0.3);
 
     // mouth
-    fill(this.detailColour);
-    ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
+
+    // strokeWeight(0.03);
+
+    // fill(this.lipColour);
+    // stroke(this.lipColour);
+    // this.draw_segment(positions.top_lip);
+    // this.draw_segment(positions.bottom_lip);
+
+    this.topLipL = positions.top_lip[0];
+    this.topLipT = positions.top_lip[3];
+    this.topLipR = positions.top_lip[6];
+
+    this.botLipL = positions.bottom_lip[6];
+    this.botLipT = positions.bottom_lip[3];
+    this.botLipR = positions.bottom_lip[0];
+
+    if(this.lipColour < 50){
+    fill(180, 0, 0);
+    }
+    if(this.lipColour > 50){
+      fill(235, 148, 148);
+      }
+
+    //ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
+    
+    triangle(this.topLipL[0]-0.2, this.topLipL[1],
+      this.topLipT[0], this.topLipT[1]-0.2,
+      this.topLipR[0]+0.2, this.topLipR[1]);
+
+    triangle(this.botLipL[0]-0.2, this.botLipL[1],
+      this.botLipT[0], this.botLipT[1],
+      this.botLipR[0], this.botLipR[1]);
 
     // eyebrows
     fill( this.eyebrowColour);
@@ -105,23 +196,8 @@ this.flowerValue = 0;
     //ellipse(segment_average(positions.right_eyebrow)[0], segment_average(positions.right_eyebrow)[1], 1, 1);
 
     // draw the chin segment using points
-    fill(this.chinColour);
-    stroke(this.chinColour);
     this.draw_segment(positions.chin);
     
-    
-
-    fill(100, 0, 100);
-    stroke(100, 0, 100);
-    this.draw_segment(positions.nose_bridge);
-    this.draw_segment(positions.nose_tip);
-
-    strokeWeight(0.03);
-
-    fill(this.lipColour);
-    stroke(this.lipColour);
-    this.draw_segment(positions.top_lip);
-    this.draw_segment(positions.bottom_lip);
 
     let left_eye_pos = segment_average(positions.left_eye);
     let right_eye_pos = segment_average(positions.right_eye);
@@ -144,7 +220,7 @@ this.flowerValue = 0;
       this.chinPoint = positions.chin[15]
       //console.log(this.chinPoint)
 
-      ellipse(this.chinPoint[0],this.chinPoint[1], .5)
+      
       // fill(this.mainColour);
       // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
       // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
@@ -154,8 +230,9 @@ this.flowerValue = 0;
    //rect(-2,-2,4.5,4) sizing debug 
 
    //hat 
-   this.chinPoint0 = positions.chin[0]
-   rect(this.chinPoint0[0], this.chinPoint0[1]-2, 3, 1);
+  //  this.chinPoint0 = positions.chin[0]
+  //  fill(this.currentColor);
+  //  rect(this.chinPoint0[0], this.chinPoint0[1]-2, 3, 1);
   }
 
   // example of a function *inside* the face object.
@@ -181,16 +258,16 @@ this.flowerValue = 0;
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
     this.colourShift = map(settings[0], 0, 100, 0, 1);
-    this.eyeBrowValue = map(settings[1], 0, 100, 0, 100);
-    this.flowerValue = map(settings[2], 0, 100, 0, 20);
+    this.hairLength = map(settings[1], 0, 100, 0, 100);
+    this.lipColour = map(settings[2], 0, 100, 0, 100);
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
     let settings = new Array(3);
     settings[0] = map(this.colourShift,0, 1, 0, 100);
-    settings[1] = map(this.eyeBrowValue, 0, 100, 0, 100);
-    settings[2] = map(this.flowerValue,0, 20, 0, 100);
+    settings[1] = map(this.hairLength, 0, 100, 0, 100);
+    settings[2] = map(this.lipColour,0, 100, 0, 100);
     return settings;
   }
 }
