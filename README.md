@@ -11,3 +11,7 @@ worked on understtanding the code today. After understanding how the points on t
 Today I worked on adding more shapes to my face to bring the cubism form together. I also experimented with editing the sliders. I plan to either a hat or hair ontop of the head which is affected by a slider depending on the references hair length and color. 
 
 I Have been working on the sliders and how they will be affected by the reference faces. I've decided to go with hair color, hair length and whether they are wearing lipstick or not. Originally I was just going to have 2 options for hair. One with long and the other with short. Howerver looking at the sample reference faces I noticed alot of different lengths and bald people aswell. I ended up having 5 options of hair length which stack ontop of each other to make it longer. 
+
+Trained the AI with my slider values. Through this process I have realised that there arent many features that I analyse which results in reasonably boring results. For example, most the men would look the same on my coded face as they all had short hair and no lipstick 
+
+Trained more values in the trainer. Now all of the training faces have been trained. 
