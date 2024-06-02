@@ -15,3 +15,5 @@ I Have been working on the sliders and how they will be affected by the referenc
 Trained the AI with my slider values. Through this process I have realised that there arent many features that I analyse which results in reasonably boring results. For example, most the men would look the same on my coded face as they all had short hair and no lipstick 
 
 Trained more values in the trainer. Now all of the training faces have been trained. 
+
+Uploaded sample images. For my images I tried to find images that have multiple people in them with different facial features. I wanted a variety of gender, hair colour and length to maximize the effects of my code. 

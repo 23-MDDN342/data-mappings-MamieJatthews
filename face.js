@@ -196,7 +196,7 @@ this.lipColour = 0;
     //ellipse(segment_average(positions.right_eyebrow)[0], segment_average(positions.right_eyebrow)[1], 1, 1);
 
     // draw the chin segment using points
-    this.draw_segment(positions.chin);
+    //this.draw_segment(positions.chin);
     
 
     let left_eye_pos = segment_average(positions.left_eye);
@@ -217,7 +217,7 @@ this.lipColour = 0;
       arc(left_eye_pos[0], left_eye_pos[1], 1, 0.5, 180, 0, CHORD)
       arc(right_eye_pos[0], right_eye_pos[1], 1, 0.5, 180, 0, CHORD)
       
-      this.chinPoint = positions.chin[15]
+      //this.chinPoint = positions.chin[15]
       //console.log(this.chinPoint)
 
       
