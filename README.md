@@ -8,6 +8,10 @@ This README should be used to document your design.
 
 FINAL README:
 
+CUBISM FACE FILTER:
+Code by Jamie Matthews.
+
+For this project I was tasked to create a stylised face filter using face detection technology. By using reference points on a reference face, I used various shapes in relation to these values to create a design which can follow a moving face. I decided to use a similar style to that of my previous project, embodying the cubism movement with simplistic and colourful shapes. When it came to making sliders which I wanted the AI to detect, Afew of my concepts were hair length and colour, hats/accessories, jewellery, lip and eye colour, etc. I ended up settling with hair length and colour and lipstick as I thought they were the most dominant features that would affect the appearence of my face. 
 
 worked on understtanding the code today. After understanding how the points on the face can translate to making shapes I was able to begin making shapes on my face to create my mask. 
 
