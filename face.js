@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 3;
@@ -30,19 +30,12 @@ function segment_average(segment) {
 
 // This where you define your own face object
 function Face() {
-  // these are state variables for a face
-  // (your variables should be different!)
-  this.detailColour = [204, 136, 17];
-  this.mainColour = [51, 119, 153];
-  this.num_eyes = 2;    // can be either 1 (cyclops) or 2 (two eyes)
-  this.eye_shift = -1;   // range is -10 to 10
-  this.mouth_size = 1;  // range is 0.5 to 8
+  
 
   this.chinColour = [153, 153, 51]
-  //this.lipColour = [136, 68, 68]
   this.eyebrowColour = [119, 85, 17]
 
-this.colourShift = 50;
+this.colourShift = 0;
 this.hairLength = 0;
 this.lipColour = 0;
   /*
@@ -53,7 +46,7 @@ this.lipColour = 0;
   this.draw = function(positions) {
     console.log()
 
-
+    //create a lerp color from dark brown to blonde for the hair colour 
     this.red = color(41, 21, 4);
     this.blue = color(250, 198, 102);
     this.currentColor = lerpColor(this.red,this.blue, this.colourShift)
@@ -82,6 +75,7 @@ this.lipColour = 0;
   
 
    // head
+   //determine head reference points 
   this.chin1 = positions.chin[1];
   this.chin14 = positions.chin[14];
   this.chin7 = positions.chin[7];
@@ -90,6 +84,7 @@ this.lipColour = 0;
   this.chin15 = positions.chin[15];
   
 
+  //draw head shapes 
    ellipseMode(CENTER);
    fill(235, 126, 9);
    rect(this.chinPoint0[0], this.chinPoint0[1]-2, 3.5, 3, 5, 5, 0, 0);
@@ -105,16 +100,19 @@ this.lipColour = 0;
 
    //hair top
    this.chinPoint0 = positions.chin[0];
-   
+   //fill hair with lerp color 
    fill(this.currentColor);
    
+   //if slider is above 20 short hair 
    if(this.hairLength > 20){
    rect(this.chinPoint0[0], this.chinPoint0[1]-2.6, 3.5, 1.5, 5, 5, 0, 0);
    }
+   //if slider is above 40 have medium hair 
    if(this.hairLength > 40){
    arc(this.chinPoint0[0]+0.1, this.chinPoint0[1]-1.4, 2, 3, 290, 150, CHORD)
    arc(this.chinPoint16[0]+0.1, this.chinPoint16[1]-1.4, 2, 3, 50, 240, CHORD)
    } 
+   //if slider is less than 20 there is no hair 
 
    //nose
    fill(0, 100, 100);
@@ -130,13 +128,7 @@ this.lipColour = 0;
 
     // mouth
 
-    // strokeWeight(0.03);
-
-    // fill(this.lipColour);
-    // stroke(this.lipColour);
-    // this.draw_segment(positions.top_lip);
-    // this.draw_segment(positions.bottom_lip);
-
+    //deteremine reference points for lips 
     this.topLipL = positions.top_lip[0];
     this.topLipT = positions.top_lip[3];
     this.topLipR = positions.top_lip[6];
@@ -145,6 +137,7 @@ this.lipColour = 0;
     this.botLipT = positions.bottom_lip[3];
     this.botLipR = positions.bottom_lip[0];
 
+    //if slider is above 50 make lips pale and if above 50 make red 
     if(this.lipColour < 50){
     fill(180, 0, 0);
     }
@@ -152,7 +145,7 @@ this.lipColour = 0;
       fill(235, 148, 148);
       }
 
-    //ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
+      //draw top and bottom lip
     
     triangle(this.topLipL[0]-0.2, this.topLipL[1],
       this.topLipT[0], this.topLipT[1]-0.2,
@@ -166,8 +159,6 @@ this.lipColour = 0;
     fill( this.eyebrowColour);
     stroke( this.currentColor);
     strokeWeight(0.08);
-    //this.draw_segment(positions.left_eyebrow);
-    //this.draw_segment(positions.right_eyebrow);
 
     //set variables for left eyebrow
     this.browLeft = positions.left_eyebrow[1]
@@ -192,20 +183,15 @@ this.lipColour = 0;
              this.browTop_R[0], this.browTop_R[1]-0.2,
              this.browRight_R[0]+0.2, this.browRight_R[1]);      
 
-    //ellipse(segment_average(positions.left_eyebrow)[0], segment_average(positions.left_eyebrow)[1], 1, 1);
-    //ellipse(segment_average(positions.right_eyebrow)[0], segment_average(positions.right_eyebrow)[1], 1, 1);
 
-    // draw the chin segment using points
-    //this.draw_segment(positions.chin);
     
 
+    // eyes
     let left_eye_pos = segment_average(positions.left_eye);
     let right_eye_pos = segment_average(positions.right_eye);
-
-    // eyes
+    
     strokeWeight(0.05);
     stroke(0);
-    let curEyeShift = 0.04 * this.eye_shift;
     
       fill(255);
       ellipse(left_eye_pos[0], left_eye_pos[1], 1, 0.5);
@@ -217,22 +203,6 @@ this.lipColour = 0;
       arc(left_eye_pos[0], left_eye_pos[1], 1, 0.5, 180, 0, CHORD)
       arc(right_eye_pos[0], right_eye_pos[1], 1, 0.5, 180, 0, CHORD)
       
-      //this.chinPoint = positions.chin[15]
-      //console.log(this.chinPoint)
-
-      
-      // fill(this.mainColour);
-      // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
-      // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
-    
-   // fill(0)
-   //ellipse(0,0, 0.5,0.5) center point
-   //rect(-2,-2,4.5,4) sizing debug 
-
-   //hat 
-  //  this.chinPoint0 = positions.chin[0]
-  //  fill(this.currentColor);
-  //  rect(this.chinPoint0[0], this.chinPoint0[1]-2, 3, 1);
   }
 
   // example of a function *inside* the face object.
